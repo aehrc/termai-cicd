@@ -112,6 +112,35 @@ Required GitHub setup:
 - Repository Actions must have `packages: write` permission.
 - Registry auth is handled with `${{ secrets.GITHUB_TOKEN }}` in the workflow.
 
+## Git Tag And Release Versioning
+
+Project versioning is managed by `setuptools-scm` from git history/tags.
+
+- On a tagged commit (for example `v0.2.0`), the package version is `0.2.0`.
+- On commits after that tag, versions are generated automatically (for example `0.2.0.post1+g<sha>`).
+
+Create a new release tag:
+
+```bash
+git checkout main
+git pull
+git tag -a v0.2.0 -m "Release v0.2.0"
+git push origin v0.2.0
+```
+
+Create a GitHub release from the tag:
+
+```bash
+gh release create v0.2.0 --title "v0.2.0" --notes "Release notes for v0.2.0"
+```
+
+Recommended release flow:
+
+1. Merge tested changes to `main`.
+2. Create and push an annotated tag (`vX.Y.Z`).
+3. Create a GitHub release for that tag.
+4. Let CI build/push the Docker image for the tagged commit.
+
 ## Kubernetes Deploy
 
 Manifests are under `k8s/`:

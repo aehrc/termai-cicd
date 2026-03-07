@@ -1,6 +1,6 @@
 [project]
 name = "termai-cicd"
-version = "0.1.0"
+dynamic = ["version"]
 description = "CI/CD testing project for Termai with a simple FastAPI health service"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -17,11 +17,15 @@ test = [
 ]
 
 [build-system]
-requires = ["setuptools>=69.0"]
+requires = ["setuptools>=69.0", "setuptools-scm>=8.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 include = ["app*"]
+
+[tool.setuptools_scm]
+version_scheme = "post-release"
+local_scheme = "node-and-date"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
