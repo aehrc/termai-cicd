@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  IMAGE_NAME: mingcsiro/termai/termai-cicd
+  IMAGE_NAME: mingcsiro/termai-docker-repo
 
 jobs:
   test-build-push:
