@@ -31,3 +31,6 @@ pip-wheel-metadata/
 # IDE/editor settings
 .vscode/
 .idea/
+
+# Local project notes/instructions
+agent/
