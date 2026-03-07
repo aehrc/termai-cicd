@@ -14,8 +14,8 @@ RUN python -m pip install --upgrade pip && \
 
 COPY app ./app
 
-EXPOSE 8000
+EXPOSE 8101
 
 USER app
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8101"]

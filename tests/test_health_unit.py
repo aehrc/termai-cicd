@@ -1,4 +1,5 @@
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from app.services.health_service import build_health_payload
 
@@ -12,3 +13,4 @@ def test_build_health_payload_shape_and_values() -> None:
 
     parsed = datetime.fromisoformat(payload["time"])
     assert parsed is not None
+    assert parsed.utcoffset() == datetime.now(ZoneInfo("Australia/Sydney")).utcoffset()

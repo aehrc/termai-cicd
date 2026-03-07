@@ -2,7 +2,7 @@
 
 CI/CD testing project for Termai, using a simple FastAPI service with one endpoint:
 
-- `GET /health` returns `status` and `time` (UTC ISO-8601 format).
+- `GET /health` returns `status` and `time` (Australia/Sydney ISO-8601 format).
 
 ## Requirements
 
@@ -55,13 +55,45 @@ python -m pytest -vv -s -rA --log-cli-level=INFO
 Start FastAPI with Uvicorn:
 
 ```bash
-uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+uvicorn app.main:app --host 0.0.0.0 --port 8101 --reload
 ```
 
 Health endpoint:
 
 ```bash
-curl http://127.0.0.1:8000/health
+curl http://127.0.0.1:8101/health
+```
+
+## Local Docker Testing
+
+Build the image:
+
+```bash
+docker build -t termai-cicd:local .
+```
+
+Run the container:
+
+```bash
+docker run --rm -p 8101:8101 --name termai-cicd-local termai-cicd:local
+```
+
+Test the health endpoint from another terminal:
+
+```bash
+curl http://127.0.0.1:8101/health
+```
+
+Inspect logs:
+
+```bash
+docker logs termai-cicd-local
+```
+
+Stop the container:
+
+```bash
+docker stop termai-cicd-local
 ```
 
 ## CI/CD Pipeline

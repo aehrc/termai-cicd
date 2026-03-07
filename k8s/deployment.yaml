@@ -20,7 +20,7 @@ spec:
           image: ${IMAGE}
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8000
+            - containerPort: 8101
               name: http
           env:
             - name: APP_ENV

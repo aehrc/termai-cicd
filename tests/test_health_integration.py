@@ -1,4 +1,5 @@
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from fastapi.testclient import TestClient
 
@@ -20,3 +21,4 @@ def test_health_endpoint_returns_expected_payload() -> None:
 
     parsed = datetime.fromisoformat(body["time"])
     assert parsed is not None
+    assert parsed.utcoffset() == datetime.now(ZoneInfo("Australia/Sydney")).utcoffset()
