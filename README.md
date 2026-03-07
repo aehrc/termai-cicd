@@ -28,7 +28,7 @@ Install app and test dependencies:
 
 ```bash
 python -m pip install --upgrade pip
-python -m pip install -e ".[test]"
+python -m pip install -e ".[test,dev]"
 ```
 
 ## Build / Checks
@@ -68,14 +68,16 @@ curl http://127.0.0.1:8101/health
 
 Build the image:
 
-```bash
-docker build -t termai-cicd:local .
+```powershell
+$RAW_VERSION = python -m setuptools_scm
+$VERSION = $RAW_VERSION.Trim() -replace '\+', '-'
+docker build -t "termai-cicd:$VERSION" -t "termai-cicd:latest" .
 ```
 
 Run the container:
 
-```bash
-docker run --rm -p 8101:8101 --name termai-cicd-local termai-cicd:local
+```powershell
+docker run --rm -p 8101:8101 --name termai-cicd-local "termai-cicd:$VERSION"
 ```
 
 Test the health endpoint from another terminal:
@@ -111,6 +113,16 @@ Required GitHub setup:
 
 - Repository Actions must have `packages: write` permission.
 - Registry auth is handled with `${{ secrets.GITHUB_TOKEN }}` in the workflow.
+
+Dynamic version tags are sanitized for Docker compatibility (replaces `+` with `-`):
+
+```bash
+raw_version="$(python -m setuptools_scm)"
+docker_version="${raw_version//+/-}"
+echo "value=$docker_version" >> "$GITHUB_OUTPUT"
+```
+
+The workflow outputs `docker_version` and uses it for image tags.
 
 ## Git Tag And Release Versioning
 

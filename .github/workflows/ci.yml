@@ -31,10 +31,18 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
+          python -m pip install setuptools-scm
           python -m pip install -r requirements.txt -r requirements-test.txt
 
       - name: Run tests
         run: python -m pytest -q
+
+      - name: Get package version
+        id: version
+        run: |
+          raw_version="$(python -m setuptools_scm)"
+          docker_version="${raw_version//+/-}"
+          echo "value=$docker_version" >> "$GITHUB_OUTPUT"
 
       - name: Set image metadata
         id: meta
@@ -56,5 +64,6 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
+            ${{ steps.meta.outputs.image }}:${{ steps.version.outputs.value }}
             ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.tag_sha }}
             ${{ steps.meta.outputs.image }}:latest
