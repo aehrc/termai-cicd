@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: termai-cicd
-  namespace: ${NAMESPACE}
+  namespace: term-ai
   labels:
     app: termai-cicd
 spec:

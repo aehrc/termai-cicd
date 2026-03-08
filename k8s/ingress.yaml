@@ -2,12 +2,22 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: termai-cicd
-  namespace: ${NAMESPACE}
+  namespace: term-ai
+  labels:
+    app.kubernetes.io/name: termai-cicd
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: termai
   annotations:
-    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: cluster-issuer-csiro
+    kubernetes.io/ingress.allow-http: "false"
 spec:
+  ingressClassName: contour
+  tls:
+    - hosts:
+        - termai-cicd.dw.csiro.au
+      secretName: termai-cicd-tls
   rules:
-    - host: ${INGRESS_HOST}
+    - host: termai-cicd.dw.csiro.au
       http:
         paths:
           - path: /

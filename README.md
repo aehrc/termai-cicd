@@ -159,7 +159,7 @@ Manifests are under `k8s/`:
 
 - `deployment.yaml`
 - `service.yaml`
-- `ingress.yaml`
+- `ingress.yaml` (TLS enabled; uses secret `termai-cicd-tls`)
 
 These files use placeholders so namespace/image/host are configurable:
 
@@ -178,6 +178,20 @@ kubectl create namespace "$NAMESPACE" --dry-run=client -o yaml | kubectl apply -
 envsubst < k8s/deployment.yaml | kubectl apply -f -
 envsubst < k8s/service.yaml | kubectl apply -f -
 envsubst < k8s/ingress.yaml | kubectl apply -f -
+```
+
+For `.dw.csiro.au`, cert-manager will provision TLS automatically from the Ingress annotation:
+
+```yaml
+cert-manager.io/cluster-issuer: cluster-issuer-csiro
+```
+
+`termai-cicd-tls` is created/renewed by cert-manager.
+
+Verify HTTPS:
+
+```bash
+curl -I https://termai-cicd.dw.csiro.au/health
 ```
 
 ## Updating Image And Triggering Deployment

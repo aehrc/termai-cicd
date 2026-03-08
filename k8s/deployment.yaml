@@ -2,11 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: termai-cicd
-  namespace: ${NAMESPACE}
+  namespace: term-ai
   labels:
     app: termai-cicd
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: termai-cicd
@@ -16,8 +16,8 @@ spec:
         app: termai-cicd
     spec:
       containers:
-        - name: api
-          image: ${IMAGE}
+        - name: termai-cicd
+          image: mingcsiro/termai-cicd:v0.2.3
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8101
